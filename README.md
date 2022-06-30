@@ -34,5 +34,11 @@ def MNN_Inference(mnnFile, img, INPUTSIZE=448):
 尝试使用 tensorrt-python 进行推理测试
 `trt_inference.py`
 
+### 结果
+![](https://github.com/youngx123/Multi-label-classification/blob/main/eval_test/test_result/blue_jeans_31.png?raw=true)
+
+![](https://github.com/youngx123/Multi-label-classification/blob/main/eval_test/test_result/blue_shirt_37.png?raw=true)
+
+![](https://github.com/youngx123/Multi-label-classification/blob/main/eval_test/test_result/white_shoe_40.png?raw=true)
 ### 模型转化工具
 >https://convertmodel.com/#outputFormat=tnn
