@@ -17,17 +17,33 @@ def main(savedir):
     class_num = len(dataloder.TYPE)+len(dataloder.COLOR)
     # net = DarkNet(class_num)
     net = DarkNet(class_num=class_num)
-    net.load_state_dict(torch.load("best.pt"))
-    valdir = "./test_data"
+    net.load_state_dict(torch.load("best.pt", map_location="cpu"))
+
+    # # # model convert to onnx
+    # a = torch.randn((1, 3, 448, 448))
+    # input_node = ["inputNode"]
+    # out_node = ["outPutNode"]
+    # net.eval()
+    # saveOnnxName = "multi_label_classification.onnx"
+    # torch.onnx.export(net, a, saveOnnxName, verbose=True, input_names=input_node,
+    #                   output_names=out_node, opset_version=9)
+
+
+    valdir = "eval_test/test_img"
     valset = ImageLoader(valdir)
     valLoader = DataLoader(valset, batch_size=1, shuffle=False)
 
+    if torch.cuda.is_available():
+        device = "cuda"
+    else:
+        device ="cpu"
     net.to(device)
     net.eval()
     pred_num = 0
     with torch.no_grad():
         for id, batch in enumerate(valLoader):
             img, label, imgfile = batch[0].float().to(device), batch[1].float().to(device), batch[2]
+
             label = label.squeeze(1)
             color_gt = label[0, :len(dataloder.COLOR)]
             type_gt = label[0, len(dataloder.COLOR):]
